@@ -14,14 +14,8 @@ class Station
   end
 
   #Возвращение списка поездов на станции по типу
-  def print_trains_by_type(type)
-    choose_trains = []
-    for counter in @trains
-      if counter.type == type
-        choose_trains.push(counter)
-      end
-    end
-    return choose_trains
+  def get_trains_by_type(type)
+    return @trains.select { |item| item.type == type }
   end
 
   #Удаление поезда со станции
@@ -40,12 +34,12 @@ class Route
 
   #Добавление промежуточной станции в список
   def add_station(station)
-    @stations.insert(2, station)
+    @stations.insert(-2, station)
   end
 
   #Удаление недавно добавленной станции
-  def del_station
-    @stations.delete_at(2)
+  def del_station(station)
+    @stations.delete(station)
   end
 
 end
@@ -55,13 +49,9 @@ class Train
   attr_reader :type
   attr_reader :number
 
-  #Начальное создание класса с приемом произвольного номера поезда и определенного типа 'п' - пассажирский и 'г' - грузовой
+  #Начальное создание класса с приемом произвольного номера поезда и приемом типа поезда "грузовой" или "пассажирский"
   def initialize(number, type)
-    if type == 'п'
-      @type = "пассажирский"
-    elsif type == 'г'
-      @type = "грузовой"
-    end
+    @type = type
     @number = number
     @speed = 0
     @wagon = 0
@@ -107,26 +97,28 @@ class Train
     if (@number_station + 1) == @route.stations.length
       puts 'Конечная станция, ехать можно только назад'
     else
-      @route.stations[@number_station].send_train
+      current_station.send_train
       @number_station += 1
-      @current_station = @route.stations[@number_station]
-      @current_station.get_train(train)
+      current_station.get_train(train)
     end
   end
 
   #Возвращение на станцию назад
   def back_to_last_station(train)
     if @number_station != 0
-      @route.stations[@number_station].send_train
+      current_station.send_train
       @number_station -= 1
-      @current_station = @route.stations[@number_station]
-      @current_station.get_train(train)
+      current_station.get_train(train)
     else
       puts 'Поезд находится в начальой точке маршрута'
     end
   end
 
-  def last_station
+  def current_station
+    return @route.stations[@number_station]
+  end
+
+  def previous_station
     if @number_station == 0
       puts "Поезд находится на начальной станции"
     else
@@ -139,18 +131,6 @@ class Train
       puts 'Поезд находится на конечной станции'
     else
       return @route.stations[@number_station + 1]
-    end
-  end
-
-  #Вывод предыдущей, текущей, следующей станции
-  def print_lcn_station
-
-    if @number_station == 0
-      puts "Это начальная станция #{@current_station.name}, следующая станция #{next_station.name}"
-    elsif (@number_station + 1) == @route.stations.length
-      puts "Это конечная станция #{@current_station.name}, предыдущая станция #{last_station.name}"
-    else
-      puts "Текущая станция #{@current_station.name}, предыдущая станция #{last_station.name}, следующая станция #{next_station.name}"
     end
   end
 end
