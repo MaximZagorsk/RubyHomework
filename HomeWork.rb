@@ -1,71 +1,53 @@
 class Station
   attr_reader :name
+  attr_reader :trains
   #При инициализации класса определяется его имя
   def initialize(name)
     @name = name
     #Пустой список колличества поездов на станции
-    @train_array = Array.new()
+    @trains = []
   end
 
   #Прием поезда
   def get_train(train)
-    @train_array.push(train)
+    @trains.push(train)
   end
 
-  #Возвращение списка всех поездов на станции
-  def print_train_list
-    for counter in @train_array
-      puts "Поезд с номером #{counter.number}"
-    end
-  end
-
-  #Возвращение списка поесздов на станции по типу
-  def print_trains_by_type
-    cargo = 0
-    passenger = 0
-    for counter in @train_array
-      if counter.type == "грузовой"
-        cargo += 1
-      elsif counter.type == "пассажирский"
-        passenger += 1
+  #Возвращение списка поездов на станции по типу
+  def print_trains_by_type(type)
+    choose_trains = []
+    for counter in @trains
+      if counter.type == type
+        choose_trains.push(counter)
       end
     end
-    puts "На платформе находится #{cargo} грузовых и #{passenger} пассажирских"
+    return choose_trains
   end
 
   #Удаление поезда со станции
   def send_train
-    @train_array.pop
+    @trains.pop
   end
 end
 
 class Route
-  attr_reader :station_array
+  attr_reader :stations
 
   #Инициализация с приемом аргументов начальной и конечной станции
   def initialize(start_station, end_station)
-    @station_array = Array.new()
-    @station_array.push(start_station, end_station)
+    @stations = [start_station, end_station]
   end
 
   #Добавление промежуточной станции в список
   def add_station(station)
-    @station_array.insert(2, station)
+    @stations.insert(2, station)
   end
 
   #Удаление недавно добавленной станции
   def del_station
-    @station_array.delete_at(2)
+    @stations.delete_at(2)
   end
 
-  "Вывод всех станций по порядку от начальной до конечной"
-  def print_all_station
-    i = 1
-    for count in @station_array
-      puts "Станция #{i} #{count.name}"
-      i += 1
-    end
-  end
 end
 
 class Train
@@ -73,11 +55,11 @@ class Train
   attr_reader :type
   attr_reader :number
 
-  #Начальное создание класса с приемом произвольного номера поезда и определенного типа 1 - пассажирский и 2 - грузовой
+  #Начальное создание класса с приемом произвольного номера поезда и определенного типа 'п' - пассажирский и 'г' - грузовой
   def initialize(number, type)
-    if type == 1
+    if type == 'п'
       @type = "пассажирский"
-    elsif type == 2
+    elsif type == 'г'
       @type = "грузовой"
     end
     @number = number
@@ -112,23 +94,22 @@ class Train
     @speed = 0
   end
 
-
   #Принятие маршрута
-  def submit_route(route)
+  def submit_route(route, train)
     @route = route
     @number_station = 0
-    @start_station = route.station_array[0]
-    @current_station = @start_station
+    @current_station = route.stations[0]
+    @current_station.get_train(train)
   end
 
   #Отправление к следующей станции
   def go_to_next_station(train)
-    if (@number_station + 1) == @route.station_array.length
+    if (@number_station + 1) == @route.stations.length
       puts 'Конечная станция, ехать можно только назад'
     else
-      @route.station_array[@number_station].send_train
+      @route.stations[@number_station].send_train
       @number_station += 1
-      @current_station = @route.station_array[@number_station]
+      @current_station = @route.stations[@number_station]
       @current_station.get_train(train)
     end
   end
@@ -136,25 +117,40 @@ class Train
   #Возвращение на станцию назад
   def back_to_last_station(train)
     if @number_station != 0
-      @route.station_array[@number_station].send_train
+      @route.stations[@number_station].send_train
       @number_station -= 1
-      @current_station = @route.station_array[@number_station]
+      @current_station = @route.stations[@number_station]
       @current_station.get_train(train)
     else
       puts 'Поезд находится в начальой точке маршрута'
     end
   end
 
-  #Печать l - last - предыдущей, c - current - текущей n - next -следующей станции
+  def last_station
+    if @number_station == 0
+      puts "Поезд находится на начальной станции"
+    else
+      return @route.stations[@number_station - 1]
+    end
+  end
+
+  def next_station
+    if (@number_station + 1) == @route.stations.length
+      puts 'Поезд находится на конечной станции'
+    else
+      return @route.stations[@number_station + 1]
+    end
+  end
+
+  #Вывод предыдущей, текущей, следующей станции
   def print_lcn_station
 
     if @number_station == 0
-      puts "Это начальная станция #{(@route.station_array[@number_station]).name}, следующая станция #{(@route.station_array[@number_station + 1]).name}"
-    elsif (@number_station + 1) == @route.station_array.length
-      puts "Это конечная станция #{(@route.station_array[@number_station]).name}, предыдущая станция #{(@route.station_array[@number_station - 1]).name}"
+      puts "Это начальная станция #{@current_station.name}, следующая станция #{next_station.name}"
+    elsif (@number_station + 1) == @route.stations.length
+      puts "Это конечная станция #{@current_station.name}, предыдущая станция #{last_station.name}"
     else
-      puts "Текущая станция #{(@route.station_array[@number_station]).name}, предыдущая станция #{(@route.station_array[@number_station - 1]).name}, следующая станция #{(@route.station_array[@number_station + 1]).name}"
+      puts "Текущая станция #{@current_station.name}, предыдущая станция #{last_station.name}, следующая станция #{next_station.name}"
     end
-
   end
 end
