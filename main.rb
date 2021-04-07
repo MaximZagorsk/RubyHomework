@@ -59,7 +59,16 @@ def return_train_list_on_station(station)
   station.trains
 end
 
+@stations = []
 while TRUE
-  puts " 1. Создать станцию.\n 2.Создать оезд.п\n 3. Cоздать маршрут.\n 4. Перемещение поезда"
-  gets
+  puts " 1. Создать станцию.\n 2.Создать поезд\n 3. Cоздать маршрут.\n 4. Перемещение поезда"
+  user_input = gets.chomp
+  case user_input
+  when "1"
+    puts "Введите название станции:"
+    name = gets.chomp
+    @stations << create_station(name)
+  when "5"
+    @stations.each { |item| puts item.name }
+  end
 end
