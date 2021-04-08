@@ -16,5 +16,3 @@ class Route
     @stations.delete(station)
   end
 end
-
-

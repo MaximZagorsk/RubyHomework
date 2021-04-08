@@ -16,11 +16,11 @@ class Train
   end
 
   # Удаление вагона
-  def del_wagon(wagon)
-    if @wagon.zero?
+  def del_wagon
+    if @wagon.length.zero?
       puts 'У поезда нет вагонов'
     elsif @speed.zero?
-      @wagon.delete(wagon)
+      @wagon.pop
     else
       puts 'Сначала нужно остановить поезд'
     end

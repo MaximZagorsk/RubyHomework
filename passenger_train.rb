@@ -1,12 +1,10 @@
 class PassengerTrain < Train
   def initialize(number)
     super
-    @type = "passenger"
+    @type = 'passenger'
   end
 
   def add_wagon(wagon)
-    if wagon.type == self.type
-      super
-    end
+    super if wagon.type == type
   end
 end
