@@ -5,5 +5,5 @@ class Wagon
     @type = TYPE
   end
 
-  TYPE
+  TYPE = ""
 end

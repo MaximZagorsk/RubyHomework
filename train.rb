@@ -78,5 +78,7 @@ class Train
     end
   end
 
-  TYPE
+  protected
+
+  TYPE = ""
 end
