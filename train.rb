@@ -4,7 +4,7 @@ class Train
 
   # Начальное создание класса с приемом произвольного номера поезда и приемом типа поезда "грузовой" или "пассажирский"
   def initialize(number)
-    @type
+    @type = TYPE
     @number = number
     @speed = 0
     @wagon = []
@@ -77,4 +77,6 @@ class Train
       @route.stations[@number_station + 1]
     end
   end
+
+  TYPE
 end
