@@ -55,32 +55,36 @@ def choose_route
 end
 
 def manage_route
-  puts " 1. Создать маршрут.\n 2. Удалить маршрут\n 3. Изменить маршрут"
-  user_input = gets.chomp
-  case user_input
-  when '1'
-    'Введите начальную, а затем конечную станцию'
-    input_station = gets.chomp
-    station_start = @stations.find { |item| item.name == input_station }
-    input_station = gets.chomp
-    station_end = @stations.find { |item| item.name == input_station }
-    @routes << create_route(station_start, station_end)
-  when '2'
-    @routes.delete(@routes[choose_route.to_i - 1])
-  when '3'
-    select_route = @routes[choose_route.to_i - 1]
-    select_route.stations.each { |item| puts item.name }
-    puts "Выберите действие: \n 1. Добавить промежуточную станцию \n 2. Удалить станцию"
+  while TRUE
+    puts " 1. Создать маршрут.\n 2. Удалить маршрут\n 3. Изменить маршрут \n 4. Назад"
     user_input = gets.chomp
     case user_input
     when '1'
-      puts 'Введите имя станции'
-      name_station = gets.chomp
-      select_route.add_station(@stations.find { |item| item.name == name_station })
+      puts 'Введите начальную, а затем конечную станцию'
+      input_station = gets.chomp
+      station_start = @stations.find { |item| item.name == input_station }
+      input_station = gets.chomp
+      station_end = @stations.find { |item| item.name == input_station }
+      @routes << create_route(station_start, station_end)
     when '2'
-      puts 'Введите имя станции'
-      name_station = gets.chomp
-      select_route.del_station(@stations.find { |item| item.name == name_station })
+      @routes.delete(@routes[choose_route.to_i - 1])
+    when '3'
+      select_route = @routes[choose_route.to_i - 1]
+      select_route.stations.each { |item| puts item.name }
+      puts "Выберите действие: \n 1. Добавить промежуточную станцию \n 2. Удалить станцию"
+      user_input = gets.chomp
+      case user_input
+      when '1'
+        puts 'Введите имя станции'
+        name_station = gets.chomp
+        select_route.add_station(@stations.find { |item| item.name == name_station })
+      when '2'
+        puts 'Введите имя станции'
+        name_station = gets.chomp
+        select_route.del_station(@stations.find { |item| item.name == name_station })
+      end
+    when "4"
+      break
     end
   end
 end
@@ -108,7 +112,7 @@ def manage_train
       chose_train.submit_route(select_route)
     when '5'
       chose_train = choose_train
-      puts "1. Переместить на станцию вперед \n 2.Переместить на станцию назад"
+      puts " 1. Переместить на станцию вперед \n 2. Переместить на станцию назад"
       select = gets.chomp
       case select
       when '1'
@@ -123,21 +127,25 @@ def manage_train
 end
 
 def manage_stations
-  puts " 1. Создать станцию \n 2. Посмотреть список станций \n 3. Посмотреть список поездов на станции "
-  user_input = gets.chomp
-  case user_input
-  when '1'
-    puts 'Введите название станции:'
-    name = gets.chomp
-    @stations << create_station(name)
-  when '2'
-    @stations.each { |item| puts item.name }
-  when '3'
-    puts 'Выберите станцию'
-    @stations.each { |item| item.name }
-    input_name_station = gets.chomp
-    select = @stations.find { |item| item.name == input_name_station }
-    select.trains.each { |item| puts item.number }
+  while TRUE
+    puts " 1. Создать станцию \n 2. Посмотреть список станций \n 3. Посмотреть список поездов на станции\n 4. Назад"
+    user_input = gets.chomp
+    case user_input
+    when '1'
+      puts 'Введите название станции:'
+      name = gets.chomp
+      @stations << create_station(name)
+    when '2'
+      @stations.each { |item| puts item.name }
+    when '3'
+      puts 'Выберите станцию'
+      @stations.each { |item| item.name }
+      input_name_station = gets.chomp
+      select = @stations.find { |item| item.name == input_name_station }
+      select.trains.each { |item| puts item.number }
+    when '4'
+      break
+    end
   end
 end
 

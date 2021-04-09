@@ -1,10 +1,17 @@
 class CargoTrain < Train
   def initialize(number)
     super
-    @type = 'cargo'
+    @type = init_type
   end
 
   def add_wagon(wagon)
     super if wagon.type == type
+  end
+
+  private
+
+  # Инициализация типа не должна быть доступна извне
+  def init_type
+    'cargo'
   end
 end

@@ -19,7 +19,7 @@ class Station
   end
 
   # Удаление поезда со станции
-  def send_train
-    @trains.pop
+  def send_train(train)
+    @trains.delete(train)
   end
 end

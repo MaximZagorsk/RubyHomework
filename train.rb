@@ -43,7 +43,7 @@ class Train
   def go_to_next_station
     return unless next_station
 
-    current_station.send_train
+    current_station.send_train(self)
     @number_station += 1
     current_station.get_train(self)
   end
@@ -53,7 +53,7 @@ class Train
     return unless previous_station
 
     @number_station != 0
-    current_station.send_train
+    current_station.send_train(self)
     @number_station -= 1
     current_station.get_train(self)
   end
