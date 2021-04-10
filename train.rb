@@ -12,7 +12,7 @@ class Train
 
   # добавление вагона
   def add_wagon(wagon)
-    @wagon << wagon
+    @wagon << wagon if wagon.type == type
   end
 
   # Удаление вагона
@@ -78,7 +78,5 @@ class Train
     end
   end
 
-  protected
-
-  TYPE = ""
+  TYPE = nil
 end

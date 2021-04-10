@@ -14,6 +14,27 @@ class Interface
     @routes = []
   end
 
+  def start
+    loop do
+      puts " 1. Управление станциями \n 2. Управление поездами\n 3. Управление маршрутом.\n 4. Выход"
+      user_input = gets.chomp
+      case user_input
+      when '1'
+        manage_stations
+      when '2'
+        manage_train
+      when '3'
+        manage_route
+      when '4'
+        break
+      end
+    end
+  end
+
+  # Методы управления программой должны быть недоступны извне
+
+  private
+
   def manage_route
     loop do
       puts " 1. Создать маршрут.\n 2. Удалить маршрут\n 3. Изменить маршрут \n 4. Назад"
@@ -69,9 +90,6 @@ class Interface
       end
     end
   end
-
-  # Методы управления программой должны быть недоступны извне
-  private
 
   def create_station
     puts 'Введите название станции:'
