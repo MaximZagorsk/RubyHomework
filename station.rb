@@ -1,5 +1,7 @@
 class Station
+  include ::InstanceCounter
   @@object = []
+  @instance = 0
   attr_reader :name, :trains
 
   class << self
@@ -14,8 +16,8 @@ class Station
     # Пустой список колличества поездов на станции
     @trains = []
     @@object << self
+    register_instances
   end
-
 
   # Прием поезда
   def get_train(train)

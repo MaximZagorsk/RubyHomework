@@ -1,5 +1,5 @@
 class Wagon
-  include :: Company
+  include ::Company
   attr_reader :type
 
   def initialize
