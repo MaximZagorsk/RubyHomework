@@ -1,4 +1,7 @@
+require_relative 'module_company'
+
 class Train
+  include ::Company
   attr_accessor :speed
   attr_reader :type, :number
 
