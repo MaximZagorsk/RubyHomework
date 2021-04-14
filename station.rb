@@ -1,12 +1,21 @@
 class Station
+  @@object = []
   attr_reader :name, :trains
+
+  class << self
+    def all
+      @@object
+    end
+  end
 
   # При инициализации класса определяется его имя
   def initialize(name)
     @name = name
     # Пустой список колличества поездов на станции
     @trains = []
+    @@object << self
   end
+
 
   # Прием поезда
   def get_train(train)
