@@ -10,7 +10,12 @@ module InstanceCounter
     end
 
     def counter
-      @instance += 1
+      if @instance.nil?
+        @instance = 0
+        @instance += 1
+      else
+        @instance += 1
+      end
     end
   end
 
