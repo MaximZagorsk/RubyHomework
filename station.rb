@@ -1,11 +1,11 @@
 class Station
   include ::InstanceCounter
-  @@ALL = []
+  @@all = []
   attr_reader :name, :trains
 
   class << self
     def all
-      @@ALL
+      @@all
     end
   end
 
@@ -14,7 +14,7 @@ class Station
     @name = name
     # Пустой список колличества поездов на станции
     @trains = []
-    @@ALL << self
+    @@all << self
     register_instances
   end
 
