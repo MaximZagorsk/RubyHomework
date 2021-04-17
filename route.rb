@@ -1,9 +1,11 @@
 class Route
+  include ::InstanceCounter
   attr_reader :stations
 
   # Инициализация с приемом аргументов начальной и конечной станции
   def initialize(start_station, end_station)
     @stations = [start_station, end_station]
+    register_instances
   end
 
   # Добавление промежуточной станции в список

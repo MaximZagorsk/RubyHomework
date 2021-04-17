@@ -1,13 +1,25 @@
+require_relative 'module_company'
+require_relative 'instance_counter'
 class Train
+  @@all = []
+  include ::Company
+  include ::InstanceCounter
   attr_accessor :speed
   attr_reader :type, :number
 
+  class << self
+    def find(number)
+      @@all.find { |item| item.number == number }
+    end
+  end
   # Начальное создание класса с приемом произвольного номера поезда и приемом типа поезда "грузовой" или "пассажирский"
   def initialize(number)
     @type = TYPE
     @number = number
     @speed = 0
     @wagon = []
+    @@all << self
+    register_instances
   end
 
   # добавление вагона

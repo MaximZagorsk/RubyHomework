@@ -1,11 +1,21 @@
 class Station
+  include ::InstanceCounter
+  @@all = []
   attr_reader :name, :trains
+
+  class << self
+    def all
+      @@all
+    end
+  end
 
   # При инициализации класса определяется его имя
   def initialize(name)
     @name = name
     # Пустой список колличества поездов на станции
     @trains = []
+    @@all << self
+    register_instances
   end
 
   # Прием поезда
