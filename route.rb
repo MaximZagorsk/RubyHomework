@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Route
   include ::InstanceCounter
   attr_reader :stations
@@ -6,6 +8,7 @@ class Route
   def initialize(start_station, end_station)
     @stations = [start_station, end_station]
     register_instances
+    validate!
   end
 
   # Добавление промежуточной станции в список
@@ -16,5 +19,18 @@ class Route
   # Удаление недавно добавленной станции
   def del_station(station)
     @stations.delete(station)
+  end
+
+  def valid?
+    validate!
+    true
+  rescue RuntimeError
+    false
+  end
+
+  protected
+
+  def validate!
+    raise "First or second station is nil" if @stations[0].nil? && @stations[1].nil?
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'train'
 require_relative 'wagon'
 require_relative 'station'
@@ -95,6 +97,8 @@ class Interface
     puts 'Введите название станции:'
     name = gets.chomp
     @stations << Station.new(name)
+  rescue
+    puts "Вы неправильно ввели имя станции, имя не должно быть пустой строкой"
   end
 
   def create_train
@@ -107,6 +111,12 @@ class Interface
     when 'passenger'
       @trains << PassengerTrain.new(number_train)
     end
+    puts "Поезд успешно создан!"
+  rescue
+    puts "Ошибка! \nВы ввели неправильные формат поезда, введите его в таком формате:
+  три буквы или цифры в любом порядке, необязательный дефис
+  (может быть, а может нет) и еще 2 буквы или цифры после дефиса \n"
+    retry
   end
 
   def create_route
@@ -179,7 +189,7 @@ class Interface
 
   def print_train_list_on_station
     puts 'Выберите станцию'
-    @stations.each { |item| item.name }
+    @stations.each(&:name)
     input_name_station = gets.chomp
     select = @stations.find { |item| item.name == input_name_station }
     select.trains.each { |item| puts item.number }

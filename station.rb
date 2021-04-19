@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+require_relative 'instance_counter'
+
 class Station
   include ::InstanceCounter
   @@all = []
@@ -16,6 +19,7 @@ class Station
     @trains = []
     @@all << self
     register_instances
+    validate!
   end
 
   # Прием поезда
@@ -31,5 +35,11 @@ class Station
   # Удаление поезда со станции
   def send_train(train)
     @trains.delete(train)
+  end
+
+  protected
+
+  def validate!
+    raise "Empty station name" if name == ''
   end
 end
