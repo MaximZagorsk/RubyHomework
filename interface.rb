@@ -99,6 +99,7 @@ class Interface
     @stations << Station.new(name)
   rescue
     puts "Вы неправильно ввели имя станции, имя не должно быть пустой строкой"
+    retry
   end
 
   def create_train
@@ -126,6 +127,9 @@ class Interface
     input_station = gets.chomp
     station_end = @stations.find { |item| item.name == input_station }
     @routes << Route.new(station_start, station_end)
+  rescue
+    puts "Одной из станций не существует, введите существующую станцию"
+    retry
   end
 
   def add_wagon_to_train

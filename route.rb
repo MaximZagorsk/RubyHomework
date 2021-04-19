@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-
+require_relative 'instance_counter'
 class Route
   include ::InstanceCounter
   attr_reader :stations
@@ -31,6 +31,6 @@ class Route
   protected
 
   def validate!
-    raise "First or second station is nil" if @stations[0].nil? && @stations[1].nil?
+    raise "First or second station is nil" if @stations[0].nil? || @stations[1].nil?
   end
 end
