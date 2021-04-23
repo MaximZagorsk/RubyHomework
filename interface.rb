@@ -56,8 +56,8 @@ class Interface
 
   def manage_train
     loop do
-      puts " 1. Создать поезд \n 2. Добавить вагон поезду \n 3. Отцепить вагон от поезда \n 4. Установить маршрут поезду
- 5. Перемещение поезда \n 6. Назад"
+      puts " 1. Создать поезд \n 2. Добавить вагон поезду \n 3. Отцепить вагон от поезда \n 4. Список вагонов поезда
+ 5. Установить маршрут поезду \n 6. Перемещение поезда \n 7. Назад"
       user_input = gets.chomp
       case user_input
       when '1'
@@ -67,10 +67,12 @@ class Interface
       when '3'
         del_wagon_from_train(choose_train)
       when '4'
-        set_route_to_train
+        print_wagon_by_train
       when '5'
-        moving_train
+        set_route_to_train
       when '6'
+        moving_train
+      when '7'
         break
       end
     end
@@ -134,16 +136,39 @@ class Interface
 
   def add_wagon_to_train
     chose_train = choose_train
+    puts 'Введите номер вагона'
+    number = gets.chomp
     case chose_train.type
     when 'cargo'
-      chose_train.add_wagon(CargoWagon.new)
+      puts 'Введите объем вагона'
+      value = gets.chomp
+      chose_train.add_wagon(CargoWagon.new(number, value))
     when 'passenger'
-      chose_train.add_wagon(PassengerWagon.new)
+      puts 'Введите количество сидячих мест'
+      value = gets.chomp
+      chose_train.add_wagon(PassengerWagon.new(number, value))
     end
   end
 
   def del_wagon_from_train(train)
     train.del_wagon
+  end
+
+  def print_wagon_by_train
+    puts 'Выберите поезд'
+    chose_train = choose_train
+    case chose_train.type
+    when 'cargo'
+      chose_train.enumeration_wagon do |wagon|
+        puts "Вагон №#{wagon.number} тип: #{wagon.type}, кол-во занятого объема: #{wagon.occupied_volume}
+ кол-во свободного объема: #{wagon.free_volume}"
+      end
+    when 'passenger'
+      chose_train.enumeration_wagon do |wagon|
+        puts "Вагон №#{wagon.number} тип: #{wagon.type}, кол-во занятых мест: #{wagon.occupied_seat}
+ кол-во свободных мест: #{wagon.free_seats}"
+      end
+    end
   end
 
   def del_route
@@ -196,7 +221,9 @@ class Interface
     @stations.each(&:name)
     input_name_station = gets.chomp
     select = @stations.find { |item| item.name == input_name_station }
-    select.trains.each { |item| puts item.number }
+    select.train_enumeration do |train|
+      puts "Поезд №#{train.number}, тип:#{train.type}, вагонов: #{train.wagon.count}"
+    end
   end
 
   def moving_train

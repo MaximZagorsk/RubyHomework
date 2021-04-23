@@ -38,6 +38,10 @@ class Station
     @trains.delete(train)
   end
 
+  def train_enumeration(&block)
+    @trains.each { |item| block.call(item) }
+  end
+
   protected
 
   def validate!
