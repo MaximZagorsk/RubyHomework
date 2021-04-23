@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require_relative 'instance_counter'
 
 class Station
@@ -40,6 +41,6 @@ class Station
   protected
 
   def validate!
-    raise "Empty station name" if name == ''
+    raise 'Empty station name' if name == ''
   end
 end

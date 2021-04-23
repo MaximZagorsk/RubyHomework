@@ -102,9 +102,11 @@ class Train
   rescue RuntimeError
     false
   end
+
   protected
+
   def validate!
     raise "Number can't be nil" if number.nil?
-    raise "Number has invalid format" if number !~ NUMBER_FORMAT
+    raise 'Number has invalid format' if number !~ NUMBER_FORMAT
   end
 end

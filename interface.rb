@@ -78,7 +78,7 @@ class Interface
 
   def manage_stations
     loop do
-      puts " 1. Создать станцию \n 2. Посмотреть список станций \n 3. Посмотреть список поездов на станции\n 4. Назад"
+      puts "\n 1. Создать станцию \n 2. Посмотреть список станций \n 3. Посмотреть список поездов на станции\n 4. Назад"
       user_input = gets.chomp
       case user_input
       when '1'
@@ -94,16 +94,16 @@ class Interface
   end
 
   def create_station
-    puts 'Введите название станции:'
+    puts "\nВведите название станции:"
     name = gets.chomp
     @stations << Station.new(name)
-  rescue
-    puts "Вы неправильно ввели имя станции, имя не должно быть пустой строкой"
+  rescue StandardError
+    puts "\nВы неправильно ввели имя станции, имя не должно быть пустой строкой"
     retry
   end
 
   def create_train
-    puts 'Введите номер поезда, а затем тип'
+    puts "\nВведите номер поезда, а затем тип"
     number_train = gets.chomp
     type_train = gets.chomp
     case type_train
@@ -112,23 +112,23 @@ class Interface
     when 'passenger'
       @trains << PassengerTrain.new(number_train)
     end
-    puts "Поезд успешно создан!"
-  rescue
-    puts "Ошибка! \nВы ввели неправильные формат поезда, введите его в таком формате:
-  три буквы или цифры в любом порядке, необязательный дефис
-  (может быть, а может нет) и еще 2 буквы или цифры после дефиса \n"
+    puts 'Поезд успешно создан!'
+  rescue StandardError
+    puts "\nОшибка! \nВы ввели неправильные формат поезда, введите его в таком формате:
+три буквы или цифры в любом порядке, необязательный дефис
+(может быть, а может нет) и еще 2 буквы или цифры после дефиса"
     retry
   end
 
   def create_route
-    puts 'Введите начальную, а затем конечную станцию'
+    puts "\nВведите начальную, а затем конечную станцию"
     input_station = gets.chomp
     station_start = @stations.find { |item| item.name == input_station }
     input_station = gets.chomp
     station_end = @stations.find { |item| item.name == input_station }
     @routes << Route.new(station_start, station_end)
-  rescue
-    puts "Одной из станций не существует, введите существующую станцию"
+  rescue StandardError
+    puts "\nОдной из станций не существует, введите существующую станцию"
     retry
   end
 
