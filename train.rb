@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 require_relative 'module_company'
 require_relative 'instance_counter'
 class Train
+  NUMBER_FORMAT = /^\w{3}-?\w{2}$/.freeze
   @@all = []
   include ::Company
   include ::InstanceCounter
@@ -20,6 +23,7 @@ class Train
     @wagon = []
     @@all << self
     register_instances
+    validate!
   end
 
   # добавление вагона
@@ -91,4 +95,18 @@ class Train
   end
 
   TYPE = nil
+
+  def valid?
+    validate!
+    true
+  rescue RuntimeError
+    false
+  end
+
+  protected
+
+  def validate!
+    raise "Number can't be nil" if number.nil?
+    raise 'Number has invalid format' if number !~ NUMBER_FORMAT
+  end
 end
