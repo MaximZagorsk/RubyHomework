@@ -2,12 +2,16 @@
 
 require_relative 'module_company'
 require_relative 'instance_counter'
+require_relative 'validate_module'
 
 class Train
   NUMBER_FORMAT = /^\w{3}-?\w{2}$/.freeze
   @@all = []
   include ::Company
   include ::InstanceCounter
+  include ::Validation
+  validate :number, :presence
+  validate :number, :format, NUMBER_FORMAT
   attr_accessor :speed
   attr_reader :type, :number, :wagon
 
@@ -98,19 +102,5 @@ class Train
     else
       @route.stations[@number_station + 1]
     end
-  end
-
-  def valid?
-    validate!
-    true
-  rescue RuntimeError
-    false
-  end
-
-  protected
-
-  def validate!
-    raise "Number can't be nil" if number.nil?
-    raise 'Number has invalid format' if number !~ NUMBER_FORMAT
   end
 end

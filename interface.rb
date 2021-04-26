@@ -99,9 +99,6 @@ class Interface
     puts "\nВведите название станции:"
     name = gets.chomp
     @stations << Station.new(name)
-  rescue StandardError
-    puts "\nВы неправильно ввели имя станции, имя не должно быть пустой строкой"
-    retry
   end
 
   def create_train
@@ -115,7 +112,7 @@ class Interface
       @trains << PassengerTrain.new(number_train)
     end
     puts 'Поезд успешно создан!'
-  rescue StandardError
+  rescue RuntimeError
     puts "\nОшибка! \nВы ввели неправильные формат поезда, введите его в таком формате:
 три буквы или цифры в любом порядке, необязательный дефис
 (может быть, а может нет) и еще 2 буквы или цифры после дефиса"
