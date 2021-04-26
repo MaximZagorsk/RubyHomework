@@ -2,11 +2,10 @@
 
 class Wagon
   include ::Company
-  attr_reader :type
+  attr_reader :type, :number
 
-  def initialize
-    @type = TYPE
+  def initialize(number, _value)
+    @type = nil
+    @number = number
   end
-
-  TYPE = nil
 end

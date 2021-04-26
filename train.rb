@@ -2,22 +2,24 @@
 
 require_relative 'module_company'
 require_relative 'instance_counter'
+
 class Train
   NUMBER_FORMAT = /^\w{3}-?\w{2}$/.freeze
   @@all = []
   include ::Company
   include ::InstanceCounter
   attr_accessor :speed
-  attr_reader :type, :number
+  attr_reader :type, :number, :wagon
 
   class << self
     def find(number)
       @@all.find { |item| item.number == number }
     end
   end
+
   # Начальное создание класса с приемом произвольного номера поезда и приемом типа поезда "грузовой" или "пассажирский"
   def initialize(number)
-    @type = TYPE
+    @type = nil
     @number = number
     @speed = 0
     @wagon = []
@@ -40,6 +42,10 @@ class Train
     else
       puts 'Сначала нужно остановить поезд'
     end
+  end
+
+  def enumeration_wagon(&block)
+    @wagon.each { |item| block.call(item) }
   end
 
   # остановка поезда
@@ -93,8 +99,6 @@ class Train
       @route.stations[@number_station + 1]
     end
   end
-
-  TYPE = nil
 
   def valid?
     validate!
