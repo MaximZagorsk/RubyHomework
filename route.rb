@@ -1,11 +1,10 @@
-# frozen_string_literal: true
 
 require_relative 'instance_counter'
 require_relative 'validate_module'
 class Route
   include ::InstanceCounter
   include ::Validation
-  validate :stations, :presence
+  validate :stations, :validate_presence
   attr_reader :stations
 
   # Инициализация с приемом аргументов начальной и конечной станции

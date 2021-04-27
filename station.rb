@@ -1,4 +1,3 @@
-# frozen_string_literal: true
 
 require_relative 'instance_counter'
 require_relative 'validate_module'
@@ -6,7 +5,7 @@ class Station
   include ::InstanceCounter
   include ::Validation
 
-  validate :name, :presence
+  validate :name, :validate_presence
   @@all = []
   attr_reader :name, :trains
 

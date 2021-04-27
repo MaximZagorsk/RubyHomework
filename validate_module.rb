@@ -1,4 +1,3 @@
-# frozen_string_literal: true
 
 module Validation
   def self.included(base)
@@ -7,34 +6,34 @@ module Validation
   end
 
   module ClassMethods
-    def validate(name, value, arg = nil)
-      @all ||= []
-      @all << "#{name}_validate"
-      define_method("#{name}_validate") do
-        case value
-        when :presence
-          presence = instance_variable_get("@#{name}")
-          raise "#{name} can't be nil" if presence.nil?
-        when :format
-          format = instance_variable_get("@#{name}")
-          raise "#{name} has invalid format" if format !~ arg
-        when :type
-          type = instance_variable_get("@#{name}")
-          raise "Wrong type: #{name}" unless type.instance_of?(arg)
-        end
-      end
-    end
-
-    def value
-      @all
+    def validate(*args)
+      instance_variable_set("@validation_#{args[0]}_#{args[1]}", args)
     end
   end
 
   module InstanceMethods
     def validate!
-      self.class.value.each do |value|
-        send(value)
+      self.class.instance_variables.each do |value|
+        arg = self.class.instance_variable_get("#{value}")
+        if value.to_s.start_with?("@validation")
+          send(arg[1], arg)
+        end
       end
+    end
+
+    def validate_presence(args)
+      presence = instance_variable_get("@#{args[0]}")
+      raise "#{args[0]} can't be nil" if presence.nil?
+    end
+
+    def validate_type(args)
+      value = instance_variable_get("@#{args[0]}")
+      raise "Wrong type: #{args[0]}" unless value.instance_of?(args[2])
+    end
+
+    def validate_format(args)
+      value = instance_variable_get("@#{args[0]}")
+      raise "#{args[0]} has invalid format" if value !~ args[2]
     end
 
     def valid?
@@ -45,3 +44,16 @@ module Validation
     end
   end
 end
+
+class Test
+  include ::Validation
+  validate :type, :validate_presence
+  validate :type, :validate_type, String
+
+  def initialize(type)
+    @type = type
+  end
+
+end
+
+
