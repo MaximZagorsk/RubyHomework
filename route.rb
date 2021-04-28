@@ -4,7 +4,7 @@ require_relative 'validate_module'
 class Route
   include ::InstanceCounter
   include ::Validation
-  validate :stations, :validate_presence
+  validate :stations, :presence
   attr_reader :stations
 
   # Инициализация с приемом аргументов начальной и конечной станции

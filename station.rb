@@ -5,7 +5,7 @@ class Station
   include ::InstanceCounter
   include ::Validation
 
-  validate :name, :validate_presence
+  validate :name, :presence
   @@all = []
   attr_reader :name, :trains
 

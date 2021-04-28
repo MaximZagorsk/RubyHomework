@@ -9,8 +9,8 @@ class Train
   include ::Company
   include ::InstanceCounter
   include ::Validation
-  validate :number, :validate_presence
-  validate :number, :validate_format, NUMBER_FORMAT
+  validate :number, :presence
+  validate :number, :format, NUMBER_FORMAT
   attr_accessor :speed
   attr_reader :type, :number, :wagon
 
