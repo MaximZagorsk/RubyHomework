@@ -1,9 +1,11 @@
-# frozen_string_literal: true
 
 require_relative 'instance_counter'
-
+require_relative 'validate_module'
 class Station
   include ::InstanceCounter
+  include ::Validation
+
+  validate :name, :presence
   @@all = []
   attr_reader :name, :trains
 
@@ -40,11 +42,5 @@ class Station
 
   def train_enumeration(&block)
     @trains.each { |item| block.call(item) }
-  end
-
-  protected
-
-  def validate!
-    raise 'Empty station name' if name == ''
   end
 end
